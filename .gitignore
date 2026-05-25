@@ -1,0 +1,20 @@
+# Foundry build artifacts
+out/
+cache/
+broadcast/
+
+# Environment
+.env
+.env.*
+*.env
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Node (in case we add JS tooling later)
+node_modules/
+
+# Notes: lib/ is intentionally NOT ignored.
+# Dependencies installed via `forge install` are tracked as git submodules.
