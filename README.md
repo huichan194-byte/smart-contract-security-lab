@@ -9,12 +9,14 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
 
 In progress. Started on Day 1.
 
-## Day 1 — Reentrancy: Vulnerable Vault
+## Day 1-2 — Reentrancy: Vulnerable Vault + Exploit PoC
 
 - [x] `src/reentrancy/VulnerableVault.sol`
   A minimal ETH vault that sends ETH to the user **before** updating the user's balance, which makes it vulnerable to reentrancy.
-- [ ] Attacker contract (Day 2)
-- [ ] Foundry PoC test (Day 2)
+- [x] `src/reentrancy/ReentrancyAttacker.sol`
+  Attacker contract that re-enters `withdraw` from `receive()` to drain the vault.
+- [x] `test/reentrancy/ReentrancyPoC.t.sol`
+  Foundry PoC: with only 1 ETH of attacker capital, the exploit drains a 10 ETH vault.
 - [ ] Fixed version (Day 3)
 - [ ] Short writeup (Day 4)
 
@@ -30,12 +32,16 @@ smart-contract-security-lab/
 ├─ lib/
 │  ├─ forge-std/             # Foundry standard testing library (submodule)
 │  └─ openzeppelin-contracts/ # OpenZeppelin Solidity library (submodule)
-└─ src/
+├─ src/
+│  └─ reentrancy/
+│     ├─ VulnerableVault.sol
+│     └─ ReentrancyAttacker.sol
+└─ test/
    └─ reentrancy/
-      └─ VulnerableVault.sol
+      └─ ReentrancyPoC.t.sol
 ```
 
-`test/` and `reports/` directories will be added on later days.
+`reports/` directory will be added on Day 4.
 
 ## Dependencies
 
