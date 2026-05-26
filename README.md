@@ -75,7 +75,7 @@ foundryup
 ### 2. Clone with submodules
 
 ```bash
-git clone --recurse-submodules https://github.com/huichan194-byte/smart-contract-security-lab.git
+git clone --recurse-submodules https://github.com/huichain/smart-contract-security-lab.git
 cd smart-contract-security-lab
 ```
 
@@ -115,5 +115,5 @@ forge test
 
 Software engineer with C++ / C# background, transitioning into smart contract security and Web3 tooling.
 
-- GitHub: [huichan194-byte](https://github.com/huichan194-byte)
+- GitHub: [huichain](https://github.com/huichain)
 - X: [@vividhui](https://x.com/vividhui)
