@@ -9,15 +9,19 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
 
 In progress. Started on Day 1.
 
-## Day 1-2 — Reentrancy: Vulnerable Vault + Exploit PoC
+## Day 1-3 — Reentrancy: Vulnerable Vault, Exploit PoC, and Fix
 
 - [x] `src/reentrancy/VulnerableVault.sol`
   A minimal ETH vault that sends ETH to the user **before** updating the user's balance, which makes it vulnerable to reentrancy.
 - [x] `src/reentrancy/ReentrancyAttacker.sol`
   Attacker contract that re-enters `withdraw` from `receive()` to drain the vault.
+- [x] `src/reentrancy/FixedVault.sol`
+  Hardened vault using checks-effects-interactions and OpenZeppelin's `ReentrancyGuard` (defense in depth).
 - [x] `test/reentrancy/ReentrancyPoC.t.sol`
-  Foundry PoC: with only 1 ETH of attacker capital, the exploit drains a 10 ETH vault.
-- [ ] Fixed version (Day 3)
+  Foundry PoC test suite:
+  - `testExploit_DrainsVault` — the attack drains a 10 ETH vault with 1 ETH of attacker capital
+  - `testFix_BlocksReentrancy` — the same attacker against `FixedVault` reverts and victim funds remain safe
+  - `testFix_AllowsHonestWithdraw` — sanity check that the fix does not break legitimate users
 - [ ] Short writeup (Day 4)
 
 ## Project Structure
@@ -35,7 +39,8 @@ smart-contract-security-lab/
 ├─ src/
 │  └─ reentrancy/
 │     ├─ VulnerableVault.sol
-│     └─ ReentrancyAttacker.sol
+│     ├─ ReentrancyAttacker.sol
+│     └─ FixedVault.sol
 └─ test/
    └─ reentrancy/
       └─ ReentrancyPoC.t.sol
@@ -105,7 +110,7 @@ forge test
 
 | Vulnerability | Status |
 | --- | --- |
-| Reentrancy | In progress (Day 1-4) |
+| Reentrancy | Implementation done (Day 1-3); writeup pending (Day 4) |
 | Access Control | Planned |
 | Signature Replay | Planned |
 | Oracle Manipulation | Planned |
