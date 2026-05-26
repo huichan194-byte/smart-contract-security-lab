@@ -3,6 +3,10 @@ out/
 cache/
 broadcast/
 
+# Debug / trace output
+trace.txt
+*.trace
+
 # Environment
 .env
 .env.*
