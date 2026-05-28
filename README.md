@@ -7,7 +7,9 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
 
 ## Status
 
-In progress. Started on Day 1.
+- ✅ **Reentrancy** module complete — vulnerable contract, attacker, fix, 3 passing tests, audit-style writeup
+- 🟡 **Access Control** module in progress — vulnerable contract written; exploit tests + fix + writeup pending
+- ⚪ Signature Replay, Oracle Manipulation, Upgradeable Proxy — planned
 
 ## Reentrancy — Vulnerable Vault, Exploit PoC, Fix, and Writeup
 
@@ -33,15 +35,18 @@ smart-contract-security-lab/
 ├─ foundry.lock         # Locked dependency versions
 ├─ .gitmodules          # Git submodules (forge-std, openzeppelin-contracts)
 ├─ .gitignore
+├─ remappings.txt       # IDE-friendly remappings (mirrors foundry.toml)
 ├─ README.md
 ├─ lib/
 │  ├─ forge-std/             # Foundry standard testing library (submodule)
 │  └─ openzeppelin-contracts/ # OpenZeppelin Solidity library (submodule)
 ├─ src/
-│  └─ reentrancy/
-│     ├─ VulnerableVault.sol
-│     ├─ ReentrancyAttacker.sol
-│     └─ FixedVault.sol
+│  ├─ reentrancy/
+│  │  ├─ VulnerableVault.sol
+│  │  ├─ ReentrancyAttacker.sol
+│  │  └─ FixedVault.sol
+│  └─ access-control/
+│     └─ VulnerableTreasury.sol
 ├─ test/
 │  └─ reentrancy/
 │     └─ ReentrancyPoC.t.sol
@@ -118,10 +123,10 @@ forge test
 | Vulnerability | Status |
 | --- | --- |
 | Reentrancy | ✅ Done — vulnerable + attacker + fix + tests + writeup |
-| Access Control | Planned |
-| Signature Replay | Planned |
-| Oracle Manipulation | Planned |
-| Upgradeable Proxy | Planned |
+| Access Control | 🟡 In progress — vulnerable contract written; exploit tests + fix + writeup pending |
+| Signature Replay | ⚪ Planned |
+| Oracle Manipulation | ⚪ Planned |
+| Upgradeable Proxy | ⚪ Planned |
 
 ## About the Author
 
