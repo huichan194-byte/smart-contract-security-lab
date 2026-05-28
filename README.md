@@ -99,7 +99,13 @@ forge build
 
 ### 4. Test
 
-No tests yet — tests will be added starting from Day 2.
+The Reentrancy module ships with 3 passing tests in `test/reentrancy/`:
+
+- `testExploit_DrainsVault` — proves the attacker drains a 10 ETH vault with 1 ETH of capital.
+- `testFix_BlocksReentrancy` — proves the same exploit reverts against `FixedVault`.
+- `testFix_AllowsHonestWithdraw` — sanity check that legitimate users still work.
+
+Run all tests:
 
 ```bash
 forge test
