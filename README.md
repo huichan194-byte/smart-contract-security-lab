@@ -8,7 +8,7 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
 ## Status
 
 - ✅ **Reentrancy** module complete — vulnerable contract, attacker, fix, 3 passing tests, audit-style writeup
-- 🟡 **Access Control** module in progress — vulnerable contract written; exploit tests + fix + writeup pending
+- 🟡 **Access Control** module — vulnerable + fixed contracts, 5 passing tests; audit writeup pending (`reports/02-access-control.md`)
 - ⚪ Signature Replay, Oracle Manipulation, Upgradeable Proxy — planned
 
 ## Reentrancy — Vulnerable Vault, Exploit PoC, Fix, and Writeup
@@ -26,6 +26,22 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
   - `testFix_AllowsHonestWithdraw` — sanity check that the fix does not break legitimate users
 - [x] [`reports/01-reentrancy.md`](reports/01-reentrancy.md)
   Audit-style writeup: severity, summary, root cause, PoC, recommendation, fixed implementation, and learnings.
+
+## Access Control — Vulnerable Treasury, Exploit PoC, Fix
+
+- [x] `src/access-control/VulnerableTreasury.sol`
+  A protocol treasury with an `owner` field, but `withdraw` and `setOwner` have **no access checks** — two independent bugs.
+- [x] `src/access-control/FixedTreasury.sol`
+  Hardened treasury using OpenZeppelin `Ownable` and `onlyOwner` on sensitive functions (no separate attacker contract needed; EOA can exploit the vulnerable version).
+- [x] `test/access-control/AccessControlPoC.t.sol`
+  Foundry PoC test suite:
+  - `testExploit_AnyoneCanDrainTreasury` — any account can call `withdraw` and drain all ETH
+  - `testExploit_AnyoneCanBecomeOwner` — any account can call `setOwner` and seize ownership
+  - `testFix_BlocksUnauthorizedWithdraw` — attacker `withdraw` reverts with `OwnableUnauthorizedAccount`
+  - `testFix_BlocksUnauthorizedSetOwner` — attacker `setOwner` reverts; owner unchanged
+  - `testFix_AllowsOwnerFunctions` — legitimate owner can still withdraw and transfer ownership
+- [ ] [`reports/02-access-control.md`](reports/02-access-control.md)
+  Audit-style writeup (planned — Day 7).
 
 ## Project Structure
 
@@ -46,12 +62,16 @@ smart-contract-security-lab/
 │  │  ├─ ReentrancyAttacker.sol
 │  │  └─ FixedVault.sol
 │  └─ access-control/
-│     └─ VulnerableTreasury.sol
+│     ├─ VulnerableTreasury.sol
+│     └─ FixedTreasury.sol
 ├─ test/
-│  └─ reentrancy/
-│     └─ ReentrancyPoC.t.sol
+│  ├─ reentrancy/
+│  │  └─ ReentrancyPoC.t.sol
+│  └─ access-control/
+│     └─ AccessControlPoC.t.sol
 └─ reports/
-   └─ 01-reentrancy.md
+   ├─ 01-reentrancy.md
+   └─ 02-access-control.md   # planned
 ```
 
 ## Dependencies
@@ -104,16 +124,32 @@ forge build
 
 ### 4. Test
 
-The Reentrancy module ships with 3 passing tests in `test/reentrancy/`:
+The lab currently ships with **8 passing tests** across two modules:
+
+**Reentrancy** (`test/reentrancy/`):
 
 - `testExploit_DrainsVault` — proves the attacker drains a 10 ETH vault with 1 ETH of capital.
 - `testFix_BlocksReentrancy` — proves the same exploit reverts against `FixedVault`.
 - `testFix_AllowsHonestWithdraw` — sanity check that legitimate users still work.
 
+**Access Control** (`test/access-control/`):
+
+- `testExploit_AnyoneCanDrainTreasury` — proves anyone can drain the treasury via `withdraw`.
+- `testExploit_AnyoneCanBecomeOwner` — proves anyone can seize ownership via `setOwner`.
+- `testFix_BlocksUnauthorizedWithdraw` — proves `FixedTreasury` blocks unauthorized withdrawals.
+- `testFix_BlocksUnauthorizedSetOwner` — proves unauthorized ownership transfer reverts.
+- `testFix_AllowsOwnerFunctions` — sanity check that the owner can still operate the treasury.
+
 Run all tests:
 
 ```bash
 forge test
+```
+
+Run a single module:
+
+```bash
+forge test --match-path test/access-control/AccessControlPoC.t.sol -vv
 ```
 
 > Note: `verbosity = 3` is set in `foundry.toml`, so `forge test` already shows the same level of detail as `forge test -vvv`.
@@ -123,7 +159,7 @@ forge test
 | Vulnerability | Status |
 | --- | --- |
 | Reentrancy | ✅ Done — vulnerable + attacker + fix + tests + writeup |
-| Access Control | 🟡 In progress — vulnerable contract written; exploit tests + fix + writeup pending |
+| Access Control | 🟡 Code + tests done — writeup pending (`reports/02-access-control.md`) |
 | Signature Replay | ⚪ Planned |
 | Oracle Manipulation | ⚪ Planned |
 | Upgradeable Proxy | ⚪ Planned |
