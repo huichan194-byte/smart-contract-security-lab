@@ -9,8 +9,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @dev    Fix applied to both bugs from the vulnerable version:
 ///
 ///         1. `withdraw` — `onlyOwner` so only the owner can move treasury ETH.
-///         2. `setOwner` — `onlyOwner` and delegates to `transferOwnership` so
-///            ownership changes follow OpenZeppelin's two-step-safe pattern.
+///         2. `setOwner` — `onlyOwner` and delegates to `transferOwnership`.
 ///
 ///         `deposit` and `receive` remain public by design (anyone may fund the treasury).
 contract FixedTreasury is Ownable {

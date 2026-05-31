@@ -8,7 +8,7 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
 ## Status
 
 - ✅ **Reentrancy** module complete — vulnerable contract, attacker, fix, 3 passing tests, audit-style writeup
-- 🟡 **Access Control** module — vulnerable + fixed contracts, 5 passing tests; audit writeup pending (`reports/02-access-control.md`)
+- ✅ **Access Control** module complete — vulnerable + fixed contracts, 5 passing tests, audit-style writeup
 - ⚪ Signature Replay, Oracle Manipulation, Upgradeable Proxy — planned
 
 ## Reentrancy — Vulnerable Vault, Exploit PoC, Fix, and Writeup
@@ -40,8 +40,8 @@ Each day adds one small, working piece: a vulnerable contract, an attacker, a fi
   - `testFix_BlocksUnauthorizedWithdraw` — attacker `withdraw` reverts with `OwnableUnauthorizedAccount`
   - `testFix_BlocksUnauthorizedSetOwner` — attacker `setOwner` reverts; owner unchanged
   - `testFix_AllowsOwnerFunctions` — legitimate owner can still withdraw and transfer ownership
-- [ ] [`reports/02-access-control.md`](reports/02-access-control.md)
-  Audit-style writeup (planned — Day 7).
+- [x] [`reports/02-access-control.md`](reports/02-access-control.md)
+  Audit-style writeup: two findings (`withdraw`, `setOwner`), severity, PoC, recommendation, fixed implementation, and learnings.
 
 ## Project Structure
 
@@ -71,7 +71,7 @@ smart-contract-security-lab/
 │     └─ AccessControlPoC.t.sol
 └─ reports/
    ├─ 01-reentrancy.md
-   └─ 02-access-control.md   # planned
+   └─ 02-access-control.md
 ```
 
 ## Dependencies
@@ -159,7 +159,7 @@ forge test --match-path test/access-control/AccessControlPoC.t.sol -vv
 | Vulnerability | Status |
 | --- | --- |
 | Reentrancy | ✅ Done — vulnerable + attacker + fix + tests + writeup |
-| Access Control | 🟡 Code + tests done — writeup pending (`reports/02-access-control.md`) |
+| Access Control | ✅ Done — vulnerable + fix + tests + writeup |
 | Signature Replay | ⚪ Planned |
 | Oracle Manipulation | ⚪ Planned |
 | Upgradeable Proxy | ⚪ Planned |
